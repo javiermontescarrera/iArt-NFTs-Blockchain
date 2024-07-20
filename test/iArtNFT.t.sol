@@ -22,7 +22,7 @@ contract iArtNFTTest is Test {
     }
 
     function testSuccess_GetFirstTimePrice() public view {
-        assertEq(token.firstTimePrice(), 15_000_000 gwei);
+        assertEq(token.firstTimePrice(), 1_500_000 gwei);
     }
 
     function testSuccess_SetFirstTimePrice() public {
@@ -42,9 +42,9 @@ contract iArtNFTTest is Test {
         // vm.expectEmit();
 
         address user1 = address(0x1234567);
-        vm.deal(user1, 15_000_000 gwei);
+        vm.deal(user1, 1_500_000 gwei);
 
-        uint256 amount = 15_000_000 gwei;
+        uint256 amount = 1_500_000 gwei;
         // console.log(amount);
 
         // Start simulating user1 sending the transaction

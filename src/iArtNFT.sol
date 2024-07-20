@@ -11,9 +11,9 @@ contract iArtNFT is ERC721URIStorage, Ownable {
     uint256 public currentTokenId;
     
     /// @notice Prices established when 1 eth = US$3400
-    uint128 public firstTimePrice = 15_000_000 gwei;
-    uint128 public normalPrice = 45_000_000 gwei;
-    uint128 public offerPrice = 15_000_000 gwei;
+    uint128 public firstTimePrice = 1_500_000 gwei;
+    uint128 public normalPrice = 4_500_000 gwei;
+    uint128 public offerPrice = 1_500_000 gwei;
     string public external_url;
 
     bool offerTime = false;
@@ -112,7 +112,7 @@ contract iArtNFT is ERC721URIStorage, Ownable {
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Maintenance Certificate",',
+                        '{"name": iArtNFT - "', nftInfo.paintingName,'",',
                         '"description": "This digital certificate serves as authentic evidence that the specified maintenance operations were performed under specific conditions",',
                         '"external_url": "', external_url,'",',
                         '"image": "', _nftImageIpfsHash, '",',
@@ -144,6 +144,18 @@ contract iArtNFT is ERC721URIStorage, Ownable {
         
         return result;
     }
+
+    function getETHBalance() public view returns(uint) {
+        return address(this).balance;
+    }
+
+    /// @notice This serves as a way to withdraw all the accumulated Eth
+    /// @dev This could better, as in made to allow the caller to be a contract
+    function withdraw() public onlyOwner {
+        address payable to = payable(msg.sender);
+        to.transfer(getETHBalance());
+    }
+
 
     // The following function is an override required by Solidity.
     
