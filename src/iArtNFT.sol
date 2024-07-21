@@ -11,9 +11,9 @@ contract iArtNFT is ERC721URIStorage, Ownable {
     uint256 public currentTokenId;
     
     /// @notice Prices established when 1 eth = US$3400
-    uint128 public firstTimePrice = 1_500_000 gwei;
-    uint128 public normalPrice = 4_500_000 gwei;
-    uint128 public offerPrice = 1_500_000 gwei;
+    uint128 public firstTimePrice = 1_500 gwei;
+    uint128 public normalPrice = 4_500 gwei;
+    uint128 public offerPrice = 1_500 gwei;
     string public external_url;
 
     bool offerTime = false;
@@ -105,31 +105,29 @@ contract iArtNFT is ERC721URIStorage, Ownable {
     }
 
     // Update MetaData
-    function updateMetaData(uint256 tokenId, string memory _nftImageIpfsHash) internal {
+    function updateMetaData(uint256 tokenId, string memory nftImageIpfsHash) internal {
         nftData memory nftInfo = nftList[tokenId];
 
         string memory json = Base64.encode(
             bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name": iArtNFT - "', nftInfo.paintingName,'",',
-                        '"description": "This digital certificate serves as authentic evidence that the specified maintenance operations were performed under specific conditions",',
-                        '"external_url": "', external_url,'",',
-                        '"image": "', _nftImageIpfsHash, '",',
-                        '"attributes": [',
-                            '{"trait_type": "paintingName",',
-                            '"value": "', nftInfo.paintingName ,'"},',
-                            '{"trait_type": "creationDate",',
-                            '"value": ', nftInfo.creationDate ,'}'
-                        ']}'
-                    )
+                abi.encodePacked(
+                    '{"name": "iArtNFT - ', nftInfo.paintingName, '",',
+                    '"description": "This digital certificate serves as authentic evidence that the specified maintenance operations were performed under specific conditions.",',
+                    '"external_url": "', external_url, '",',
+                    '"image": "', nftImageIpfsHash, '",',
+                    '"attributes": [',
+                        '{"trait_type": "paintingName",',
+                        '"value": "', nftInfo.paintingName, '"}',
+                    ']}'
                 )
             )
         );
+
         // Create token URI
         string memory finalTokenURI = string(
             abi.encodePacked("data:application/json;base64,", json)
         );
+
         // Set token URI
         _setTokenURI(tokenId, finalTokenURI);
     }
