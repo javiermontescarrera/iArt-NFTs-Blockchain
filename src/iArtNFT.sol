@@ -71,6 +71,16 @@ contract iArtNFT is ERC721URIStorage, Ownable {
         external_url = _external_url;
     }
 
+    function getPrice() external view returns (uint128 price) {
+        price = normalPrice;
+        if (offerTime == true) {
+            price = offerPrice;
+        }
+        else if (ownedNFTs[msg.sender].length == 0) {
+            price = firstTimePrice;
+        }
+    }
+
     function mintToPayer(
         string memory _paintingName, 
         string memory _paintingDescription,
@@ -112,12 +122,12 @@ contract iArtNFT is ERC721URIStorage, Ownable {
             bytes(
                 abi.encodePacked(
                     '{"name": "iArtNFT - ', nftInfo.paintingName, '",',
-                    '"description": "This digital certificate serves as authentic evidence that the specified maintenance operations were performed under specific conditions.",',
+                    '"description": "', nftInfo.paintingDescription, '",',
                     '"external_url": "', external_url, '",',
                     '"image": "', nftImageIpfsHash, '",',
                     '"attributes": [',
                         '{"trait_type": "paintingName",',
-                        '"value": "', nftInfo.paintingName, '"}',
+                        '"value": "iArtNFT - ', nftInfo.paintingName, '"}',
                     ']}'
                 )
             )
